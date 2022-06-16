@@ -1,0 +1,39 @@
+{% extends "dashboard.html" %}
+
+{% block section %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/manage_users.css') }}" />
+<div class="container">
+
+	<div class="table">
+		<div class="table-header">
+			<div class="header__item"><a id="id" class="filter__link" href="#">ID</a></div>
+			<div class="header__item"><a id="username" class="filter__link filter__link--number" href="#">Username</a></div>
+			<div class="header__item"><a id="delete" class="filter__link filter__link--number" href="#">Delete</a></div>
+			<div class="header__item"><a id="promote" class="filter__link filter__link--number" href="#">Promote</a></div>
+		</div>
+		<div class="table-content">
+		{% for user in data %}
+			<div class="table-row">
+				<div class="table-data">{{ user['id'] }}</div>
+				<div class="table-data">{{ user['username'] }}</div>
+                {% if user['account_status'] == 'enabled' %}
+				<div class="table-data"><button class='delete' data-set={{ user['username'] }}_{{ user['role'] }}>disable</button></div>
+                {% else %}
+                <div class="table-data"><button class='delete' data-set={{ user['username'] }}_{{ user['role'] }}>enable</button></div>
+                {% endif %}
+                {% if user['role'] == 'admin' %}
+				<div class="table-data"><button class='promote' data-set={{ user['username'] }}_{{ user['role'] }}>demote</button></div>
+                {% else %}
+                <div class="table-data"><button class='promote' data-set={{ user['username'] }}_{{ user['role'] }}>promote</button></div>
+                {% endif %}
+			</div>
+		{% endfor %}
+		</div>
+	</div>
+</div>
+<!-- SocketIO JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='scripts/manage_users.js') }}"></script>
+
+{% endblock %}

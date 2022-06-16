@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+{% block content%}
+<div class="login-page">
+  <div class="form">
+    <form class="login-form" method="POST">
+      {{ form.full_name(class_='form_control', placeholder='Username',
+      autocomplete='off',
+      autofocus=true) }}
+      {{ form.password(class_='form_control', placeholder='Password',
+      autocomplete='off',
+      autofocus=true) }}
+      {{ form.submit_button }}
+      <p class="message"><a href="#"></a></p>
+      {{ form.csrf_token }}
+    </form>
+    <p class="message"><a href="{{ url_for('register') }}">Havn't registred yet? Register now!!</a></p>
+  </div>
+</div>
+{% endblock %}

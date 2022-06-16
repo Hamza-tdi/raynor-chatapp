@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+{% block content%}
+<div class="login-page">
+  <div class="form">
+    <form class="login-form" method="POST">
+      {{ form.first_name(class_='form_control', placeholder='First name',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.first_name.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.last_name(class_='form_control', placeholder='Last name',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.last_name.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.birth_date(class_='form_control', placeholder='Last name',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.birth_date.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.phone_number(class_='form_control', placeholder='Phone number',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.phone_number.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.email_address(class_='form_control', placeholder='Email address',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.email_address.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.address(class_='form_control', placeholder='Address',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.address.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.zipcode(class_='form_control', placeholder='Zipcode',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.zipcode.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {% for subfield in form.genre %}
+        <p >Genre</p>
+        <tr>
+            <td>{{ subfield }}</td>
+            <td>{{ subfield.label }}</td>
+        </tr>
+      {% endfor %}
+      {% for error in form.genre.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.title(class_='form_control', placeholder='Company Title',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.title.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.department(class_='form_control', placeholder='Company Department',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.department.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.password(class_='form_control', placeholder='Password',
+      autocomplete='off',
+      autofocus=true) }}
+      {% for error in form.password.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.confirm_pswd(class_='form_control', placeholder='Confirm Password'
+      , autocomplete='off', autofocus=true) }}
+      {% for error in form.confirm_pswd.errors %}
+        <li>
+          {{ error }}
+        </li>
+      {% endfor %}
+      {{ form.submit_button }}
+      {{ form.csrf_token }}
+    </form>
+    {% if form.errors %}
+      {{ form.errors }}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
