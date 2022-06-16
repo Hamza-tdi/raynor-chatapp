@@ -128,9 +128,7 @@ def get_history(room):
     for message in messages:
         if message.message_type == 'TEXT':
             # decrypt message
-            with open('encryption_key', 'rb') as f:
-                key = f.read()
-            crypter = Fernet(key.decode("utf-8"))
+            crypter = Fernet(os.environ.get('KEY'))
             decrypted_msg = crypter.decrypt(message.message_text.encode())
             _dict = {'id': message.id, 'message_sender': message.message_sender, 'message_time': message.message_time,
                      'message_room': message.message_room, 'message_text': decrypted_msg.decode()}
@@ -198,13 +196,13 @@ def register():
         password = reg_form.password.data
         hashed_pswd = pbkdf2_sha256.hash(password)
 
-        # user = User(first_name=first_name, last_name=last_name, full_name=f'{first_name} {last_name}',
-        #             birth_date=f'{birth_date.day}/{birth_date.month}/{birth_date.year}', phone_number=phone_number,
-        #             email_address=email_address, address=address, zipcode=zipcode, genre=genre, title=title,
-        #             department=department, password=hashed_pswd, role='user', account_status='enabled')
-        # db.session.add(user)
-        # db.session.commit()
-        # db.session.remove()
+        user = User(first_name=first_name, last_name=last_name, full_name=f'{first_name} {last_name}',
+                    birth_date=f'{birth_date.day}/{birth_date.month}/{birth_date.year}', phone_number=phone_number,
+                    email_address=email_address, address=address, zipcode=zipcode, genre=genre, title=title,
+                    department=department, password=hashed_pswd, role='user', account_status='enabled')
+        db.session.add(user)
+        db.session.commit()
+        db.session.remove()
         flash('Registered successfully. Please login.', 'success')
         return redirect(url_for('login'))
 
@@ -252,16 +250,8 @@ def on_message(data):
     if not data['message_type'] == 'FILE':
         send({"username": username, "msg": msg, "time_stamp": time_stamp}, room=room)
     # decrypting and storing message instance
-    encrypt_file = fr'{WD_PATH}\encryption_key'
-    if not os.path.isfile(encrypt_file):
-        key = Fernet.generate_key()
-        with open('encryption_key', 'wb') as f:
-            f.write(key)
-    else:
-        with open('encryption_key', 'rb') as f:
-            key = f.read()
 
-    crypter = Fernet(key)
+    crypter = Fernet(os.environ.get('KEY'))
     msg = crypter.encrypt(msg.encode())
     message_db = Message(message_text=msg.decode(), message_sender=username, message_time=time_stamp, message_room=room, message_type=msg_type)
     db.session.add(message_db)
@@ -323,9 +313,7 @@ def on_join(data):
     msg_list = []
 
     # decrypt message content
-    with open('encryption_key', 'rb') as f:
-        key = f.read()
-    crypter = Fernet(key.decode("utf-8"))
+    crypter = Fernet(os.environ.get('KEY'))
 
     for msg in messages:
         decrypted_msg = crypter.decrypt(msg.message_text.encode())
