@@ -19,13 +19,13 @@ NAME_KEY = 'name'
 ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'v6sdv46sfé6zd4f6zfz56vcz6v4z6v5zv65dsv'
+app.config['SECRET_KEY'] = os.environ.get('SECRET')
 socketio = SocketIO(app)
 socketio.init_app(app, cors_allowed_origins="*")
 
 
 # DATA BASE
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://acseqcoypnjqmm:4b58b87a33ef4ce72ce10a0674b0a92ca0ed1c317f5326a5904f793cf4fd3a22@ec2-52-203-118-49.compute-1.amazonaws.com:5432/db7jrfrq7nv50n'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['FILE_UPLOADS'] = os.path.join(WD_PATH, 'static/files/upload')
 app.config['ALLOWED_FILES_EXTENSIONS'] = ['DOCX', 'DOC', 'DOTX', 'XLSX', 'PPTX', 'PPT', 'XLS', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF']
 
