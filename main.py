@@ -21,6 +21,7 @@ ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'v6sdv46sfé6zd4f6zfz56vcz6v4z6v5zv65dsv'
 socketio = SocketIO(app)
+socketio.init_app(app, cors_allowed_origins="*")
 
 
 # DATA BASE
