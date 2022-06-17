@@ -19,9 +19,9 @@
 				<div class="table-data">{{ room['room_name'] }}</div>
                 <div class="table-data">{{ room['nbr_users'] }}</div>
                 {% if room['is_active'] == 'YES' %}
-				<div class="table-data"><button class='disable' data-set={{ room['room_name'] }} }}>Disable</button></div>
+				<div class="table-data"><button class='disable' data-set={{ room['room_name'] }}_{{ room['is_active'] }} }}>Disable</button></div>
                 {% else %}
-                <div class="table-data"><button class='disable' data-set={{ room['room_name'] }} }}>Enable</button></div>
+                <div class="table-data"><button class='disable' data-set={{ room['room_name'] }}_{{ room['is_active'] }} }}>Enable</button></div>
                 {% endif %}
                 <div class="table-data"><a href="/download_history/{{ room['room_name'] }}" target="_blank">Download</a></div>
 			</div>

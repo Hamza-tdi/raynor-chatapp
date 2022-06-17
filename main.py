@@ -280,6 +280,23 @@ def on_promote(data):
         db.session.remove()
 
 
+@socketio.on('disable_room')
+def on_disable_room(data):
+    """ disable room """
+    if not 'inactive' in data['room']:
+        room = Room.query.filter_by(room_name=data['room'].split('_')[0]).first()
+        room.is_active = 'NO'
+        db.session.merge(room)
+        db.session.commit()
+        db.session.remove()
+    else:
+        room = Room.query.filter_by(room_name=data['room'].split('_')[0]).first()
+        room.is_active = 'YES'
+        db.session.merge(room)
+        db.session.commit()
+        db.session.remove()
+
+
 @socketio.on('disable_user')
 def on_disable(data):
     """ delete user or admin"""
