@@ -283,7 +283,7 @@ def on_promote(data):
 @socketio.on('disable_room')
 def on_disable_room(data):
     """ disable room """
-    if not 'inactive' in data['room']:
+    if not 'NO' in data['room']:
         room = Room.query.filter_by(room_name=data['room'].split('_')[0]).first()
         room.is_active = 'NO'
         db.session.merge(room)
