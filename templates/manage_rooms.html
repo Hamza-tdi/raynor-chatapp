@@ -15,7 +15,7 @@
 		<div class="table-content">
 		{% for room in data %}
 			<div class="table-row">
-				<div class="table-data">{{ room['id'] }}<p>{{room['is_active']}}</p></div>
+				<div class="table-data">{{ room['id'] }}</div>
 				<div class="table-data">{{ room['room_name'] }}</div>
                 <div class="table-data">{{ room['nbr_users'] }}</div>
                 {% if room['is_active'] == 'YES' %}
