@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 socket.emit('disable_room', {'room': btn.getAttribute('data-set')})
                 if (btn.innerText == 'Enable'){
                     btn.innerText = 'Disable'
-                    btn.setAttribute('data-set', btn.getAttribute('data-set').replace('is_active', 'is_inactive'))
+                    btn.setAttribute('data-set', btn.getAttribute('data-set').replace('YES', 'NO'))
                 }
                 else{
                     btn.innerText = 'Enable'
-                    btn.setAttribute('data-set', btn.getAttribute('data-set').replace('is_inactive', 'is_active'))
+                    btn.setAttribute('data-set', btn.getAttribute('data-set').replace('NO', 'YES'))
                 }
             });
         }
