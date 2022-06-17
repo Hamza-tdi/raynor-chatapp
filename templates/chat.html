@@ -54,8 +54,9 @@
                 <nav id="sidebar">
                     <h4>Rooms</h4>
                     {% for room in rooms %}
-                        {{ if room.is_active == 'YES'}}
+                        {% if room.is_active == 'YES' %}
                             <p id="{{ room|title }}" class="select-room cursor-pointer">{{ room|title }}</p>
+                        {% endif %}
                     {% endfor %}
                 </nav>
                 <!-- Sidebar end -->
