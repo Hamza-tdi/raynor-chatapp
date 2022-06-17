@@ -68,7 +68,7 @@ def chat():
     rooms = Room.query.all()
     room_list = []
     for room in rooms:
-        room_list.append(room.room_name)
+        room_list.append({'room_name': room.room_name, 'is_active': room.is_active})
 
     return render_template("chat.html", username=current_user.full_name, rooms=room_list)
 
