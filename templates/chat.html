@@ -55,7 +55,7 @@
                     <h4>Rooms</h4>
                     {% for room in rooms %}
                         {% if room.is_active == 'YES' %}
-                            <p id="{{ room|title }}" class="select-room cursor-pointer">{{ room|title }}</p>
+                            <p id="{{ room|title }}" class="select-room cursor-pointer">{{ room['room_name'] }}</p>
                         {% endif %}
                     {% endfor %}
                 </nav>
