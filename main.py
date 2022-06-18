@@ -158,14 +158,9 @@ def manage_rooms():
         for room in rooms:
             _dict = {'id': room.id, 'room_name': room.room_name, 'nbr_users': room.nbr_users, 'is_active': room.is_active}
             rooms_list.append(_dict)
-        print(rooms_list)
         return render_template('manage_rooms.html', data=rooms_list)
     else:
-        rooms = Room.query.all()
-        room_list = []
-        for room in rooms:
-            room_list.append(room.room_name)
-        return render_template('chat.html', username=current_user.full_name, rooms=room_list)
+        return redirect(url_for('chat'))
 
 
 @app.route('/dashboard/manage_users', methods=['GET', 'POST'])
@@ -178,11 +173,7 @@ def manage_users():
             users_list.append(_dict)
         return render_template('manage_users.html', data=users_list)
     else:
-        rooms = Room.query.all()
-        room_list = []
-        for room in rooms:
-            room_list.append(room.room_name)
-        return render_template('chat.html', username=current_user.full_name, rooms=room_list)
+        return redirect(url_for('chat'))
 
 
 @app.route('/register',  methods=['GET', 'POST'])
