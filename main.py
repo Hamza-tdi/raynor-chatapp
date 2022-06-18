@@ -152,28 +152,37 @@ def dashboard():
 
 @app.route('/dashboard/manage_rooms', methods=['GET', 'POST'])
 def manage_rooms():
-    rooms = Room.query.all()
-    rooms_list = []
-    for room in rooms:
-        _dict = {'id': room.id, 'room_name': room.room_name, 'nbr_users': room.nbr_users, 'is_active': room.is_active}
-        rooms_list.append(_dict)
-    print(rooms_list)
-    return render_template('manage_rooms.html', data=rooms_list)
-
-
-@app.route('/dashboard/analytics', methods=['GET', 'POST'])
-def analytics():
-    return 'Analytics page'
+    if current_user.is_authenticated and current_user.role == 'admin':
+        rooms = Room.query.all()
+        rooms_list = []
+        for room in rooms:
+            _dict = {'id': room.id, 'room_name': room.room_name, 'nbr_users': room.nbr_users, 'is_active': room.is_active}
+            rooms_list.append(_dict)
+        print(rooms_list)
+        return render_template('manage_rooms.html', data=rooms_list)
+    else:
+        rooms = Room.query.all()
+        room_list = []
+        for room in rooms:
+            room_list.append(room.room_name)
+        return render_template('chat.html', username=current_user.full_name, rooms=room_list)
 
 
 @app.route('/dashboard/manage_users', methods=['GET', 'POST'])
 def manage_users():
-    users = User.query.all()
-    users_list = []
-    for user in users:
-        _dict = {'id': user.id, 'username': user.full_name, 'role': user.role, 'account_status': user.account_status}
-        users_list.append(_dict)
-    return render_template('manage_users.html', data=users_list)
+    if current_user.is_authenticated and current_user.role == 'admin':
+        users = User.query.all()
+        users_list = []
+        for user in users:
+            _dict = {'id': user.id, 'username': user.full_name, 'role': user.role, 'account_status': user.account_status}
+            users_list.append(_dict)
+        return render_template('manage_users.html', data=users_list)
+    else:
+        rooms = Room.query.all()
+        room_list = []
+        for room in rooms:
+            room_list.append(room.room_name)
+        return render_template('chat.html', username=current_user.full_name, rooms=room_list)
 
 
 @app.route('/register',  methods=['GET', 'POST'])
@@ -216,7 +225,6 @@ def login():
         login_form = LoginForm()
         if login_form.validate_on_submit():
             user_object = User.query.filter_by(full_name=login_form.full_name.data).first()
-            print(user_object)
             login_user(user_object)
             if current_user.is_authenticated and current_user.account_status == 'enabled':
                 flash('You are logged in', 'success')
