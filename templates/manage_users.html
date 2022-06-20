@@ -17,7 +17,7 @@
 				<div class="table-data">{{ user['id'] }}</div>
 				<div class="table-data">{{ user['username'] }}</div>
                 {% if user['account_status'] == 'enabled' %}
-				<div class="table-data"><button class='delete' data-set={{ f"{user['username']}_{user['role']}" }}>disable</button></div>
+				<div class="table-data"><button class='delete' data-set="{{ user['username'] }}_{{ user['role'] }}">disable</button></div>
                 {% else %}
                 <div class="table-data"><button class='delete' data-set={{ user['username'] }}_{{ user['role'] }}>enable</button></div>
                 {% endif %}
