@@ -33,7 +33,7 @@ app.config['ALLOWED_FILES_EXTENSIONS'] = ['DOCX', 'DOC', 'DOTX', 'XLSX', 'PPTX',
 # app.config['SQLALCHEMY_POOL_SIZE'] = 25
 # app.config['SQLALCHEMY_MAX_OVERFLOW'] = 15
 
-db = SQLAlchemy(app, session_options={'autocommit': True})
+db = SQLAlchemy(app)
 
 
 # Configure flask login
