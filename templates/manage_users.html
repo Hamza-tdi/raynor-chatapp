@@ -19,12 +19,12 @@
                 {% if user['account_status'] == 'enabled' %}
 				<div class="table-data"><button class='delete' data-set="{{ user['username'] }}_{{ user['role'] }}">disable</button></div>
                 {% else %}
-                <div class="table-data"><button class='delete' data-set={{ user['username'] }}_{{ user['role'] }}>enable</button></div>
+                <div class="table-data"><button class='delete' data-set="{{ user['username'] }}_{{ user['role'] }}">enable</button></div>
                 {% endif %}
                 {% if user['role'] == 'admin' %}
-				<div class="table-data"><button class='promote' data-set={{ user['username'] }}_{{ user['role'] }}>demote</button></div>
+				<div class="table-data"><button class='promote' data-set="{{ user['username'] }}_{{ user['role'] }}">demote</button></div>
                 {% else %}
-                <div class="table-data"><button class='promote' data-set={{ user['username'] }}_{{ user['role'] }}>promote</button></div>
+                <div class="table-data"><button class='promote' data-set="{{ user['username'] }}_{{ user['role'] }}">promote</button></div>
                 {% endif %}
 			</div>
 		{% endfor %}
