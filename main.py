@@ -1,6 +1,8 @@
 import time
 import os
 import json
+
+import sqlalchemy.exc
 from cryptography.fernet import Fernet
 from flask import Flask, render_template, url_for, redirect, flash, request, Response, jsonify
 from flask_socketio import SocketIO, send, leave_room, join_room
@@ -320,33 +322,38 @@ def on_disable(data):
 @socketio.on('join')
 def on_join(data):
     """User joins a room"""
+    try:
+        username = data["username"]
+        room = data["room"]
+        join_room(room)
+        # send messages to join room event
+        messages = Message.query.filter_by(message_room=data['room']).all()
+        msg_list = []
 
-    username = data["username"]
-    room = data["room"]
-    join_room(room)
-    # send messages to join room event
-    messages = Message.query.filter_by(message_room=data['room']).all()
-    msg_list = []
+        # decrypt message content
+        crypter = Fernet(os.environ.get('KEY'))
 
-    # decrypt message content
-    crypter = Fernet(os.environ.get('KEY'))
+        for msg in messages:
+            decrypted_msg = crypter.decrypt(msg.message_text.encode())
 
-    for msg in messages:
-        decrypted_msg = crypter.decrypt(msg.message_text.encode())
+            _dict = {'message_sender': msg.message_sender, 'message_text': decrypted_msg.decode(),
+                     'message_room': msg.message_room, 'message_time': msg.message_time, 'message_type': msg.message_type}
+            msg_list.append(_dict)
+        socketio.emit('join_room', {'user': current_user.full_name, 'data': msg_list})
 
-        _dict = {'message_sender': msg.message_sender, 'message_text': decrypted_msg.decode(),
-                 'message_room': msg.message_room, 'message_time': msg.message_time, 'message_type': msg.message_type}
-        msg_list.append(_dict)
-    socketio.emit('join_room', {'user': current_user.full_name, 'data': msg_list})
+        # add user to room record
+        room_db = Room.query.filter_by(room_name=data['room']).first()
+        room_db.nbr_users += 1
+        db.session.commit()
+        db.session.remove()
 
-    # add user to room record
-    room_db = Room.query.filter_by(room_name=data['room']).first()
-    room_db.nbr_users += 1
-    db.session.commit()
-    db.session.remove()
-
-    # Broadcast that new user has joined
-    send({"msg": username + " has joined the " + room + " room."}, room=room)
+        # Broadcast that new user has joined
+        send({"msg": username + " has joined the " + room + " room."}, room=room)
+    except sqlalchemy.exc.TimeoutError:
+        username = data["username"]
+        room = data["room"]
+        join_room(room)
+        send({"msg": username + " has joined the " + room + " room."}, room=room)
 
 
 @socketio.on('leave')
