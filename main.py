@@ -33,7 +33,7 @@ app.config['ALLOWED_FILES_EXTENSIONS'] = ['DOCX', 'DOC', 'DOTX', 'XLSX', 'PPTX',
 # app.config['SQLALCHEMY_POOL_SIZE'] = 25
 # app.config['SQLALCHEMY_MAX_OVERFLOW'] = 15
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app, session_options={'autocommit': True})
 
 
 # Configure flask login
@@ -84,6 +84,7 @@ def add_room():
             # store new room to db
             room = Room(room_name=request.form.get('room_name'), nbr_users=0, is_active='YES')
             db.session.add(room)
+            db.session.commit()
             db.session.remove()
     return redirect(url_for('manage_rooms'))
 
@@ -204,6 +205,7 @@ def register():
                     email_address=email_address, address=address, zipcode=zipcode, genre=genre, title=title,
                     department=department, password=hashed_pswd, role='user', account_status='enabled')
         db.session.add(user)
+        db.session.commit()
         db.session.remove()
         flash('Registered successfully. Please login.', 'success')
         return redirect(url_for('login'))
@@ -256,6 +258,7 @@ def on_message(data):
     msg = crypter.encrypt(msg.encode())
     message_db = Message(message_text=msg.decode(), message_sender=username, message_time=time_stamp, message_room=room, message_type=msg_type)
     db.session.add(message_db)
+    db.session.commit()
     db.session.remove()
 
 
@@ -266,17 +269,17 @@ def on_promote(data):
         """ promote user to admin """
         username, role = data['user'].split('_')
         user = User.query.filter_by(full_name=username).first()
-        print(user.full_name)
         user.role = 'admin'
         db.session.merge(user)
+        db.session.commit()
         db.session.remove()
     else:
         """ demote user """
         username, role = data['user'].split('_')
         user = User.query.filter_by(username=username).first()
-        print(user.full_name)
         user.role = 'user'
         db.session.merge(user)
+        db.session.commit()
         db.session.remove()
 
 
@@ -287,11 +290,13 @@ def on_disable_room(data):
         room = Room.query.filter_by(room_name=data['room'].split('_')[0]).first()
         room.is_active = 'NO'
         db.session.merge(room)
+        db.session.commit()
         db.session.remove()
     else:
         room = Room.query.filter_by(room_name=data['room'].split('_')[0]).first()
         room.is_active = 'YES'
         db.session.merge(room)
+        db.session.commit()
         db.session.remove()
 
 
@@ -305,10 +310,12 @@ def on_disable(data):
             if user.account_status == 'enabled':
                 user.account_status = 'disabled'
                 db.session.merge(user)
+                db.session.commit()
                 db.session.remove()
             else:
                 user.account_status = 'enabled'
                 db.session.merge(user)
+                db.session.commit()
                 db.session.remove()
         else:
             pass
@@ -339,6 +346,7 @@ def on_join(data):
         # add user to room record
         room_db = Room.query.filter_by(room_name=data['room']).first()
         room_db.nbr_users += 1
+        db.session.commit()
         db.session.remove()
 
         # Broadcast that new user has joined
