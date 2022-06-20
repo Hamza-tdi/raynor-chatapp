@@ -264,6 +264,7 @@ def on_promote(data):
     """ promote user to admin"""
     if 'user' in data['user'].lower():
         """ promote user to admin """
+        print('user')
         username, role = data['user'].split('_')
         user = User.query.filter_by(full_name=username).first()
         user.role = 'admin'
@@ -271,6 +272,7 @@ def on_promote(data):
         db.session.remove()
     else:
         """ demote user """
+        print('admin')
         username, role = data['user'].split('_')
         user = User.query.filter_by(username=username).first()
         user.role = 'user'
