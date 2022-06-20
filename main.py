@@ -31,7 +31,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['FILE_UPLOADS'] = os.path.join(WD_PATH, 'static/files/upload')
 app.config['ALLOWED_FILES_EXTENSIONS'] = ['DOCX', 'DOC', 'DOTX', 'XLSX', 'PPTX', 'PPT', 'XLS', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF']
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app, session_options={'autocommit': True})
 
 
 # Configure flask login
@@ -46,7 +46,6 @@ private_key = 987654321
 
 @login.user_loader
 def load_user(user_id):
-
     return User.query.get(int(user_id))
 
 
