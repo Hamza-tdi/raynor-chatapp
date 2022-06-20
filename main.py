@@ -30,8 +30,9 @@ socketio.init_app(app, cors_allowed_origins="*")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['FILE_UPLOADS'] = os.path.join(WD_PATH, 'static/files/upload')
 app.config['ALLOWED_FILES_EXTENSIONS'] = ['DOCX', 'DOC', 'DOTX', 'XLSX', 'PPTX', 'PPT', 'XLS', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF']
-# app.config['SQLALCHEMY_POOL_SIZE'] = 25
-# app.config['SQLALCHEMY_MAX_OVERFLOW'] = 15
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_POOL_SIZE'] = 25
+app.config['SQLALCHEMY_MAX_OVERFLOW'] = 15
 
 db = SQLAlchemy(app)
 
