@@ -268,7 +268,7 @@ def on_promote(data):
     if 'user' in data['user'].lower():
         """ promote user to admin """
         username, role = data['user'].split('_')
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(full_name=username).first()
         user.role = 'admin'
         db.session.merge(user)
         db.session.commit()
