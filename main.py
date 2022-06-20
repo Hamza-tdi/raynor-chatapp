@@ -30,7 +30,8 @@ socketio.init_app(app, cors_allowed_origins="*")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['FILE_UPLOADS'] = os.path.join(WD_PATH, 'static/files/upload')
 app.config['ALLOWED_FILES_EXTENSIONS'] = ['DOCX', 'DOC', 'DOTX', 'XLSX', 'PPTX', 'PPT', 'XLS', 'PDF', 'PNG', 'JPG', 'JPEG', 'GIF']
-
+# app.config['SQLALCHEMY_POOL_SIZE'] = 25
+# app.config['SQLALCHEMY_MAX_OVERFLOW'] = 15
 
 db = SQLAlchemy(app, session_options={'autocommit': True})
 
@@ -173,6 +174,7 @@ def manage_users():
         for user in users:
             _dict = {'id': user.id, 'username': user.full_name, 'role': user.role, 'account_status': user.account_status}
             users_list.append(_dict)
+        print(users_list)
         return render_template('manage_users.html', data=users_list)
     else:
         return redirect(url_for('chat'))
